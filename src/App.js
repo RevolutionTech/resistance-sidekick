@@ -1,10 +1,11 @@
 import "./App.css";
 import React from "react";
+import RoleCard from "./RoleCard";
 
 function App() {
   return (
     <div className="App">
-      <p>Hello world!</p>
+      <RoleCard playerName="Player 3" team="Resistance" isRevealed={true} />
     </div>
   );
 }
