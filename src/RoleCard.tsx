@@ -9,17 +9,25 @@ interface Props {
   isRevealed: boolean;
 }
 
-export default function RoleCard(props: Props) {
-  return (
-    <Paper className="RoleCard">
-      <Typography variant="h5">Hello, {props.playerName}.</Typography>
-      <PlaceholderTypography predicate={!props.isRevealed} className="mt1">
-        When you're ready, hold down to reveal your role.
-      </PlaceholderTypography>
+export default class RoleCard extends React.PureComponent<Props> {
+  render() {
+    return (
+      <Paper className="RoleCard">
+        <Typography variant="h5">Hello, {this.props.playerName}.</Typography>
+        <PlaceholderTypography
+          predicate={!this.props.isRevealed}
+          className="mt1"
+        >
+          When you're ready, hold down to reveal your role.
+        </PlaceholderTypography>
 
-      <PlaceholderTypography predicate={props.isRevealed} className="mt6 mb6">
-        You are a member of the <strong>{props.team}</strong> team!
-      </PlaceholderTypography>
-    </Paper>
-  );
+        <PlaceholderTypography
+          predicate={this.props.isRevealed}
+          className="mt6 mb6"
+        >
+          You are a member of the <strong>{this.props.team}</strong> team!
+        </PlaceholderTypography>
+      </Paper>
+    );
+  }
 }
