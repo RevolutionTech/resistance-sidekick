@@ -5,7 +5,7 @@ import "./App.css";
 const App: React.FC = () => {
   return (
     <div className="App">
-      <RoleCard playerName="Player 3" team="Resistance" isRevealed={true} />
+      <RoleCard playerName="Player 3" team="Resistance" />
     </div>
   );
 };

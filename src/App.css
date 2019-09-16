@@ -1,3 +1,16 @@
+.mt2 {
+  margin-top: 2em;
+}
+.pt1 {
+  padding-top: 1em;
+}
+.pt6 {
+  padding-top: 6em;
+}
+.pb6 {
+  padding-bottom: 6em;
+}
+
 .App {
   text-align: center;
 }
