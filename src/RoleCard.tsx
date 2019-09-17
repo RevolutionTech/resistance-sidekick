@@ -3,22 +3,27 @@ import { Paper, Typography, LinearProgress } from "@material-ui/core";
 import PlaceholderTypography from "./PlaceholderTypography";
 import "./RoleCard.css";
 
+enum RevealState {
+  WAITING = "waiting",
+  REVEALED = "revealed"
+}
+
 interface Props {
   playerName: string;
   team: string;
 }
 
 interface State {
+  revealState: RevealState;
   revealTimer: number | null;
   revealProgress: number;
-  isRevealed: boolean;
 }
 
 export default class RoleCard extends React.PureComponent<Props, State> {
   state: State = {
+    revealState: RevealState.WAITING,
     revealTimer: null,
-    revealProgress: 0,
-    isRevealed: false
+    revealProgress: 0
   };
 
   private revealStart = () => {
@@ -27,9 +32,9 @@ export default class RoleCard extends React.PureComponent<Props, State> {
         ? window.setInterval(this.incrementRevealProgress, 500)
         : this.state.revealTimer;
     this.setState({
+      revealState: RevealState.WAITING,
       revealTimer: revealTimer,
-      revealProgress: 0,
-      isRevealed: false
+      revealProgress: 0
     });
   };
 
@@ -38,7 +43,10 @@ export default class RoleCard extends React.PureComponent<Props, State> {
       this.setState({ revealProgress: this.state.revealProgress + 50 });
     } else if (this.state.revealTimer != null) {
       window.clearInterval(this.state.revealTimer);
-      this.setState({ revealTimer: null, isRevealed: true });
+      this.setState({
+        revealState: RevealState.REVEALED,
+        revealTimer: null
+      });
     }
   };
 
@@ -47,9 +55,9 @@ export default class RoleCard extends React.PureComponent<Props, State> {
       window.clearInterval(this.state.revealTimer);
     }
     this.setState({
+      revealState: RevealState.WAITING,
       revealTimer: null,
-      revealProgress: 0,
-      isRevealed: false
+      revealProgress: 0
     });
   };
 
@@ -65,14 +73,14 @@ export default class RoleCard extends React.PureComponent<Props, State> {
       >
         <Typography variant="h5">Hello, {this.props.playerName}.</Typography>
         <PlaceholderTypography
-          predicate={!this.state.isRevealed}
+          predicate={this.state.revealState === RevealState.WAITING}
           className="pt1"
         >
           When you're ready, hold down to reveal your role.
         </PlaceholderTypography>
 
         <PlaceholderTypography
-          predicate={this.state.isRevealed}
+          predicate={this.state.revealState === RevealState.REVEALED}
           className="pt6 pb6"
         >
           You are a member of the <strong>{this.props.team}</strong> team!
