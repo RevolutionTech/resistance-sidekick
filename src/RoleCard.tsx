@@ -82,7 +82,7 @@ export default class RoleCard extends React.PureComponent<Props, State> {
   }
 
   private revealStart = () => {
-    if (this.state.revealState == RevealState.WAITING) {
+    if (this.state.revealState === RevealState.WAITING) {
       this.setState({ revealState: RevealState.HOLDING });
     }
   };
