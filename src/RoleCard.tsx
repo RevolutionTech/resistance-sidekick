@@ -12,6 +12,7 @@ enum RevealState {
 interface Props {
   playerName: string;
   team: string;
+  onComplete: () => void;
 }
 
 interface State {
@@ -52,6 +53,7 @@ export default class RoleCard extends React.PureComponent<Props, State> {
       if (this.state.revealProgress > 0) {
         this.setState({ revealProgress: this.state.revealProgress - 50 });
       } else {
+        this.props.onComplete();
         this.setState({ revealState: RevealState.WAITING });
       }
     }
