@@ -1,4 +1,6 @@
 import * as React from "react";
+import Deck from "card-deck";
+import { Typography } from "@material-ui/core";
 import RoleCard from "./RoleCard";
 
 enum Team {
@@ -11,25 +13,54 @@ interface PlayerInfo {
   team: Team;
 }
 
+interface Props {
+  numPlayers: number;
+}
+
 interface State {
   players: PlayerInfo[];
   currentPlayerIndex: number;
 }
 
-export default class Dealer extends React.PureComponent<{}, State> {
+export default class Dealer extends React.PureComponent<Props, State> {
+  private static NUM_SPIES_BY_PLAYER_COUNT: Record<number, number> = {
+    5: 2,
+    6: 2,
+    7: 3,
+    8: 3,
+    9: 3,
+    10: 4
+  };
+
   state: State = {
     players: [],
     currentPlayerIndex: 0
   };
 
   componentDidMount() {
-    const players = [
-      { name: "Player 1", team: Team.RESISTANCE },
-      { name: "Player 2", team: Team.SPY },
-      { name: "Player 3", team: Team.RESISTANCE }
-    ];
+    const players = this.dealPlayers();
     this.setState({ players, currentPlayerIndex: 0 });
   }
+
+  private dealPlayers = () => {
+    const numSpies = Dealer.NUM_SPIES_BY_PLAYER_COUNT[this.props.numPlayers];
+    let roles = new Array(this.props.numPlayers);
+    roles.fill(Team.SPY, 0, numSpies);
+    roles.fill(Team.RESISTANCE, numSpies);
+
+    let deck = new Deck(roles);
+    deck.shuffle();
+
+    const players = deck
+      .draw(this.props.numPlayers)
+      .map((team: Team, i: number) => {
+        return {
+          name: `Player ${i + 1}`,
+          team
+        };
+      });
+    return players;
+  };
 
   render() {
     const currentPlayer = this.state.players[this.state.currentPlayerIndex];
@@ -42,7 +73,7 @@ export default class Dealer extends React.PureComponent<{}, State> {
         />
       );
     } else {
-      return null;
+      return <Typography>All done! Refresh the page to try again.</Typography>;
     }
   }
 

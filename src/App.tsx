@@ -5,7 +5,7 @@ import "./App.css";
 const App: React.FC = () => {
   return (
     <div className="App">
-      <Dealer />
+      <Dealer numPlayers={5} />
     </div>
   );
 };
