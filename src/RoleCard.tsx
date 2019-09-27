@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Paper, Typography, LinearProgress } from "@material-ui/core";
+import { Paper, Typography } from "@material-ui/core";
 import "./RoleCard.css";
 
 export enum RevealState {
@@ -13,7 +13,6 @@ interface Props {
   playerName: string;
   team: string;
   revealState: RevealState;
-  revealProgress: number;
   onRevealStart: () => void;
   onRevealEnd: () => void;
 }
@@ -32,11 +31,6 @@ export class RoleCard extends React.PureComponent<Props> {
         <Typography variant="h5">Hello, {this.props.playerName}.</Typography>
         <Typography className="pt1">{this.getMainCopy()}</Typography>
         <Typography className="pt6 pb6">{this.getRevealCopy()}</Typography>
-        <LinearProgress
-          variant="determinate"
-          value={this.props.revealProgress}
-          className="mt2"
-        />
       </Paper>
     );
   }

@@ -1,6 +1,6 @@
 import * as React from "react";
 import Deck from "card-deck";
-import { Button, Typography } from "@material-ui/core";
+import { Button, Typography, LinearProgress } from "@material-ui/core";
 import RefreshIcon from "@material-ui/icons/Refresh";
 import { RevealState, RoleCard } from "./RoleCard";
 
@@ -125,6 +125,11 @@ export default class Dealer extends React.PureComponent<Props, State> {
     return (
       <>
         {this.renderBody()}
+        <LinearProgress
+          variant="determinate"
+          value={this.state.revealProgress}
+          className="mt2 mb2"
+        />
         <Button onClick={this.reset}>
           <RefreshIcon className="mr025" />
           Start over?
@@ -141,7 +146,6 @@ export default class Dealer extends React.PureComponent<Props, State> {
           playerName={currentPlayer.name}
           team={currentPlayer.team}
           revealState={this.state.revealState}
-          revealProgress={this.state.revealProgress}
           onRevealStart={this.revealStart}
           onRevealEnd={this.revealEnd}
         />
