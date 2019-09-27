@@ -1,7 +1,8 @@
 import * as React from "react";
 import Deck from "card-deck";
-import { Typography } from "@material-ui/core";
-import RoleCard from "./RoleCard";
+import { Button, Typography } from "@material-ui/core";
+import RefreshIcon from "@material-ui/icons/Refresh";
+import { RevealState, RoleCard } from "./RoleCard";
 
 enum Team {
   RESISTANCE = "Resistance",
@@ -20,6 +21,9 @@ interface Props {
 interface State {
   players: PlayerInfo[];
   currentPlayerIndex: number;
+  revealState: RevealState;
+  revealTimer: number | null;
+  revealProgress: number;
 }
 
 export default class Dealer extends React.PureComponent<Props, State> {
@@ -34,13 +38,37 @@ export default class Dealer extends React.PureComponent<Props, State> {
 
   state: State = {
     players: [],
-    currentPlayerIndex: 0
+    currentPlayerIndex: 0,
+    revealState: RevealState.WAITING,
+    revealTimer: null,
+    revealProgress: 0
   };
 
   componentDidMount() {
-    const players = this.dealPlayers();
-    this.setState({ players, currentPlayerIndex: 0 });
+    this.reset();
   }
+
+  componentWillUnmount() {
+    this.clearTimer();
+  }
+
+  private reset = () => {
+    this.clearTimer();
+    const players = this.dealPlayers();
+    this.setState({
+      players,
+      currentPlayerIndex: 0,
+      revealState: RevealState.WAITING,
+      revealTimer: window.setInterval(this.updateRevealProgress, 500),
+      revealProgress: 0
+    });
+  };
+
+  private clearTimer = () => {
+    if (this.state.revealTimer != null) {
+      window.clearInterval(this.state.revealTimer);
+    }
+  };
 
   private dealPlayers = () => {
     const numSpies = Dealer.NUM_SPIES_BY_PLAYER_COUNT[this.props.numPlayers];
@@ -62,18 +90,64 @@ export default class Dealer extends React.PureComponent<Props, State> {
     return players;
   };
 
+  private updateRevealProgress = () => {
+    if (this.state.revealState === RevealState.HOLDING) {
+      if (this.state.revealProgress < 100) {
+        this.setState({ revealProgress: this.state.revealProgress + 50 });
+      } else {
+        this.setState({ revealState: RevealState.REVEALED });
+      }
+    } else if (this.state.revealState === RevealState.PASSING) {
+      if (this.state.revealProgress > 0) {
+        this.setState({ revealProgress: this.state.revealProgress - 50 });
+      } else {
+        this.updateCurrentPlayer();
+        this.setState({ revealState: RevealState.WAITING });
+      }
+    }
+  };
+
+  private revealStart = () => {
+    if (this.state.revealState === RevealState.WAITING) {
+      this.setState({ revealState: RevealState.HOLDING });
+    }
+  };
+
+  private revealEnd = () => {
+    if (this.state.revealState === RevealState.HOLDING) {
+      this.setState({ revealState: RevealState.WAITING, revealProgress: 0 });
+    } else if (this.state.revealState === RevealState.REVEALED) {
+      this.setState({ revealState: RevealState.PASSING });
+    }
+  };
+
   render() {
+    return (
+      <>
+        {this.renderBody()}
+        <Button onClick={this.reset}>
+          <RefreshIcon className="mr025" />
+          Start over?
+        </Button>
+      </>
+    );
+  }
+
+  renderBody() {
     const currentPlayer = this.state.players[this.state.currentPlayerIndex];
     if (currentPlayer) {
       return (
         <RoleCard
           playerName={currentPlayer.name}
           team={currentPlayer.team}
-          onComplete={this.updateCurrentPlayer}
+          revealState={this.state.revealState}
+          revealProgress={this.state.revealProgress}
+          onRevealStart={this.revealStart}
+          onRevealEnd={this.revealEnd}
         />
       );
     } else {
-      return <Typography>All done! Refresh the page to try again.</Typography>;
+      return <Typography>All set!</Typography>;
     }
   }
 

@@ -2,7 +2,7 @@ import * as React from "react";
 import { Paper, Typography, LinearProgress } from "@material-ui/core";
 import "./RoleCard.css";
 
-enum RevealState {
+export enum RevealState {
   WAITING = "waiting",
   HOLDING = "holding",
   REVEALED = "revealed",
@@ -12,61 +12,21 @@ enum RevealState {
 interface Props {
   playerName: string;
   team: string;
-  onComplete: () => void;
-}
-
-interface State {
   revealState: RevealState;
-  revealTimer: number | null;
   revealProgress: number;
+  onRevealStart: () => void;
+  onRevealEnd: () => void;
 }
 
-export default class RoleCard extends React.PureComponent<Props, State> {
-  state: State = {
-    revealState: RevealState.WAITING,
-    revealTimer: null,
-    revealProgress: 0
-  };
-
-  componentDidMount() {
-    this.setState({
-      revealState: RevealState.WAITING,
-      revealTimer: window.setInterval(this.updateRevealProgress, 500),
-      revealProgress: 0
-    });
-  }
-
-  componentWillUnmount() {
-    if (this.state.revealTimer != null) {
-      window.clearInterval(this.state.revealTimer);
-    }
-  }
-
-  private updateRevealProgress = () => {
-    if (this.state.revealState === RevealState.HOLDING) {
-      if (this.state.revealProgress < 100) {
-        this.setState({ revealProgress: this.state.revealProgress + 50 });
-      } else {
-        this.setState({ revealState: RevealState.REVEALED });
-      }
-    } else if (this.state.revealState === RevealState.PASSING) {
-      if (this.state.revealProgress > 0) {
-        this.setState({ revealProgress: this.state.revealProgress - 50 });
-      } else {
-        this.props.onComplete();
-        this.setState({ revealState: RevealState.WAITING });
-      }
-    }
-  };
-
+export class RoleCard extends React.PureComponent<Props> {
   render() {
     return (
       <Paper
-        onMouseDown={this.revealStart}
-        onTouchStart={this.revealStart}
-        onMouseUp={this.revealEnd}
-        onTouchCancel={this.revealEnd}
-        onTouchEnd={this.revealEnd}
+        onMouseDown={this.props.onRevealStart}
+        onTouchStart={this.props.onRevealStart}
+        onMouseUp={this.props.onRevealEnd}
+        onTouchCancel={this.props.onRevealEnd}
+        onTouchEnd={this.props.onRevealEnd}
         className="RoleCard"
       >
         <Typography variant="h5">Hello, {this.props.playerName}.</Typography>
@@ -74,29 +34,15 @@ export default class RoleCard extends React.PureComponent<Props, State> {
         <Typography className="pt6 pb6">{this.getRevealCopy()}</Typography>
         <LinearProgress
           variant="determinate"
-          value={this.state.revealProgress}
+          value={this.props.revealProgress}
           className="mt2"
         />
       </Paper>
     );
   }
 
-  private revealStart = () => {
-    if (this.state.revealState === RevealState.WAITING) {
-      this.setState({ revealState: RevealState.HOLDING });
-    }
-  };
-
-  private revealEnd = () => {
-    if (this.state.revealState === RevealState.HOLDING) {
-      this.setState({ revealState: RevealState.WAITING, revealProgress: 0 });
-    } else if (this.state.revealState === RevealState.REVEALED) {
-      this.setState({ revealState: RevealState.PASSING });
-    }
-  };
-
   private getMainCopy = () => {
-    switch (this.state.revealState) {
+    switch (this.props.revealState) {
       case RevealState.WAITING:
       case RevealState.HOLDING:
         return <>When you're ready, hold down to reveal your role.</>;
@@ -108,7 +54,7 @@ export default class RoleCard extends React.PureComponent<Props, State> {
   };
 
   private getRevealCopy = () => {
-    switch (this.state.revealState) {
+    switch (this.props.revealState) {
       case RevealState.REVEALED:
         return (
           <>
