@@ -26,8 +26,7 @@ export class RoleCard extends React.PureComponent<Props> {
           {this.props.revealState === RevealState.PASSING ? "Thanks" : "Hello"},{" "}
           {this.props.playerName}.
         </Typography>
-        <Typography className="pt1">{this.getMainCopy()}</Typography>
-        <Typography className="pt6 pb6">{this.getRevealCopy()}</Typography>
+        <Typography className="pt1 pb2">{this.getMainCopy()}</Typography>
         <Button
           variant="contained"
           color="primary"
@@ -54,21 +53,14 @@ export class RoleCard extends React.PureComponent<Props> {
         );
       case RevealState.HOLDING:
         return <>Keep holding down to see your role.</>;
-      case RevealState.PASSING:
-        return <>Now pass the device to the player on your left.</>;
-      default:
-        return <>&nbsp;</>;
-    }
-  };
-
-  private getRevealCopy = () => {
-    switch (this.props.revealState) {
       case RevealState.REVEALED:
         return (
           <>
             You are a member of the <strong>{this.props.team}</strong> team!
           </>
         );
+      case RevealState.PASSING:
+        return <>Now pass the device to the player on your left.</>;
       default:
         return <>&nbsp;</>;
     }
