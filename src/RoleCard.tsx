@@ -22,7 +22,10 @@ export class RoleCard extends React.PureComponent<Props> {
   render() {
     return (
       <Paper className="RoleCard">
-        <Typography variant="h5">Hello, {this.props.playerName}.</Typography>
+        <Typography variant="h5">
+          {this.props.revealState === RevealState.PASSING ? "Thanks" : "Hello"},{" "}
+          {this.props.playerName}.
+        </Typography>
         <Typography className="pt1">{this.getMainCopy()}</Typography>
         <Typography className="pt6 pb6">{this.getRevealCopy()}</Typography>
         <Button
@@ -43,14 +46,15 @@ export class RoleCard extends React.PureComponent<Props> {
   private getMainCopy = () => {
     switch (this.props.revealState) {
       case RevealState.WAITING:
-      case RevealState.HOLDING:
         return (
           <>
             When you're ready, hold down the button below to reveal your role.
           </>
         );
+      case RevealState.HOLDING:
+        return <>Keep holding down to see your role.</>;
       case RevealState.PASSING:
-        return <>Okay. Now pass the device to the player on your left.</>;
+        return <>Now pass the device to the player on your left.</>;
       default:
         return <>&nbsp;</>;
     }
