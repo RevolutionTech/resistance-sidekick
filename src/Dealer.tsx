@@ -99,7 +99,7 @@ export default class Dealer extends React.PureComponent<Props, State> {
       }
     } else if (this.state.revealState === RevealState.PASSING) {
       if (this.state.revealProgress > 0) {
-        this.setState({ revealProgress: this.state.revealProgress - 50 });
+        this.setState({ revealProgress: this.state.revealProgress - 25 });
       } else {
         this.updateCurrentPlayer();
         this.setState({ revealState: RevealState.WAITING });
