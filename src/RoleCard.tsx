@@ -34,6 +34,7 @@ export class RoleCard extends React.PureComponent<Props> {
           onMouseDown={this.props.onRevealStart}
           onTouchStart={this.props.onRevealStart}
           onMouseUp={this.props.onRevealEnd}
+          onMouseLeave={this.props.onRevealEnd}
           onTouchCancel={this.props.onRevealEnd}
           onTouchEnd={this.props.onRevealEnd}
         >
