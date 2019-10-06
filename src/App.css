@@ -4,17 +4,29 @@
 .mr025 {
   margin-right: 0.25em;
 }
-.mb2 {
+.mb1 {
   margin-bottom: 1em;
 }
-.ml025 {
-  margin-left: 0.25em;
+.ml05 {
+  margin-left: 0.5em;
 }
 .pt1 {
   padding-top: 1em;
 }
 .pb2 {
   padding-bottom: 2em;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+#root,
+.App {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
 }
 
 .App {

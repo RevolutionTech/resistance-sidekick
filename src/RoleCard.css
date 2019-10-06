@@ -1,5 +1,9 @@
 .RoleCard {
-  margin-top: 2em;
+  flex: 1 1 auto;
+  display: flex;
+  flex-flow: column;
+
+  margin-top: 1em;
   margin-left: 10%;
   margin-right: 10%;
   margin-bottom: 2em;
@@ -9,4 +13,13 @@
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+/Edge */
   user-select: none; /* Standard */
+}
+
+.MainCopy {
+  flex: 1 1 auto;
+}
+
+.RevealButtonIcon {
+  padding-top: 1em;
+  padding-bottom: 1em;
 }

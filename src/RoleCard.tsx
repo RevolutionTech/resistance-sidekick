@@ -26,10 +26,13 @@ export class RoleCard extends React.PureComponent<Props> {
           {this.props.revealState === RevealState.PASSING ? "Thanks" : "Hello"},{" "}
           {this.props.playerName}.
         </Typography>
-        <Typography className="pt1 pb2">{this.getMainCopy()}</Typography>
+        <Typography className="MainCopy pt1 pb2">
+          {this.getMainCopy()}
+        </Typography>
         <Button
           variant="contained"
           color="primary"
+          size="large"
           onMouseDown={this.props.onRevealStart}
           onTouchStart={this.props.onRevealStart}
           onMouseUp={this.props.onRevealEnd}
@@ -37,7 +40,7 @@ export class RoleCard extends React.PureComponent<Props> {
           onTouchCancel={this.props.onRevealEnd}
           onTouchEnd={this.props.onRevealEnd}
         >
-          Hold to Reveal <VisibilityIcon className="ml025" />
+          Hold to Reveal <VisibilityIcon className="ml05 RevealButtonIcon" />
         </Button>
       </Paper>
     );

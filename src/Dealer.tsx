@@ -127,10 +127,10 @@ export default class Dealer extends React.PureComponent<Props, State> {
         <LinearProgress
           variant="determinate"
           value={this.state.revealProgress}
-          className="mt2 mb2"
+          className="mt2 mb1"
         />
         {this.renderBody()}
-        <Button onClick={this.reset}>
+        <Button onClick={this.reset} style={{ marginBottom: "2em" }}>
           <RefreshIcon className="mr025" />
           Start over?
         </Button>
