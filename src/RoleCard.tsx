@@ -33,6 +33,7 @@ export class RoleCard extends React.PureComponent<Props> {
           variant="contained"
           color="primary"
           size="large"
+          disabled={this.props.revealState === RevealState.PASSING}
           onMouseDown={this.props.onRevealStart}
           onTouchStart={this.props.onRevealStart}
           onMouseUp={this.props.onRevealEnd}
