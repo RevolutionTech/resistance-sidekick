@@ -2374,6 +2374,11 @@ capture-exit@^2.0.0:
   dependencies:
     rsvp "^4.8.4"
 
+card-deck@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/card-deck/-/card-deck-1.0.1.tgz#1d4e7440c0aee782d40082fb2316b58f56f8fb47"
+  integrity sha512-ET1+FkhGutPjbeFSBjYqA1n5wtDJHKf9vS15FnwbSQfDXzd/dJN3SEMcqfFDgHjP5z8Xe9yhPOfvfN4qdIaxww==
+
 case-sensitive-paths-webpack-plugin@2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/case-sensitive-paths-webpack-plugin/-/case-sensitive-paths-webpack-plugin-2.2.0.tgz#3371ef6365ef9c25fa4b81c16ace0e9c7dc58c3e"
