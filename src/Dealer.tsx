@@ -1,7 +1,6 @@
 import * as React from "react";
 import Deck from "card-deck";
-import { Button, Typography, LinearProgress } from "@material-ui/core";
-import RefreshIcon from "@material-ui/icons/Refresh";
+import { Typography, LinearProgress } from "@material-ui/core";
 import { RevealState, RoleCard } from "./RoleCard";
 
 enum Team {
@@ -130,15 +129,11 @@ export default class Dealer extends React.PureComponent<Props, State> {
           className="mt2 mb1"
         />
         {this.renderBody()}
-        <Button onClick={this.reset} style={{ marginBottom: "2em" }}>
-          <RefreshIcon className="mr025" />
-          Start over?
-        </Button>
       </>
     );
   }
 
-  renderBody() {
+  private renderBody() {
     const currentPlayer = this.state.players[this.state.currentPlayerIndex];
     if (currentPlayer) {
       return (

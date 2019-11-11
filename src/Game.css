@@ -1,0 +1,10 @@
+.SetupContainer {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  width: 75%;
+  height: 100%;
+  margin-top: 2em;
+  margin-left: auto;
+  margin-right: auto;
+}
