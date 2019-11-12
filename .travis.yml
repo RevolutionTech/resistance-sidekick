@@ -2,6 +2,9 @@ dist: xenial
 language: node_js
 cache: yarn
 
+before_install:
+  - npm install -g yarn@latest
+
 script: true # no tests
 
 before_deploy: yarn build
