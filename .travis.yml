@@ -15,3 +15,5 @@ deploy:
   bucket: "resistance-sidekick"
   skip_cleanup: true
   local_dir: build
+  on:
+    branch: master
