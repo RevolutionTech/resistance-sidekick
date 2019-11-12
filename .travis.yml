@@ -3,6 +3,8 @@ language: node_js
 node_js: 12
 cache: yarn
 
+before_script:
+  - tsc --noemit # typecheck
 script: true # no tests
 
 before_deploy: yarn build
