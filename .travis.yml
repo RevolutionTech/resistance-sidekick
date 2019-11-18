@@ -4,7 +4,7 @@ node_js: 12
 cache: yarn
 
 before_script:
-  - tsc --noemit # typecheck
+  - yarn typecheck
   - yarn lint:fix
 script: true # no tests
 
