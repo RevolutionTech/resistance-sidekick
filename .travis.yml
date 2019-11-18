@@ -5,6 +5,7 @@ cache: yarn
 
 before_script:
   - tsc --noemit # typecheck
+  - yarn lint:fix
 script: true # no tests
 
 before_deploy: yarn build
