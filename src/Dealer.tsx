@@ -43,15 +43,15 @@ export default class Dealer extends React.PureComponent<Props, State> {
     revealProgress: 0
   };
 
-  componentDidMount() {
+  componentDidMount(): void {
     this.reset();
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     this.clearTimer();
   }
 
-  private reset = () => {
+  private reset = (): void => {
     this.clearTimer();
     const players = this.dealPlayers();
     this.setState({
@@ -63,19 +63,19 @@ export default class Dealer extends React.PureComponent<Props, State> {
     });
   };
 
-  private clearTimer = () => {
+  private clearTimer = (): void => {
     if (this.state.revealTimer != null) {
       window.clearInterval(this.state.revealTimer);
     }
   };
 
-  private dealPlayers = () => {
+  private dealPlayers = (): PlayerInfo[] => {
     const numSpies = Dealer.NUM_SPIES_BY_PLAYER_COUNT[this.props.numPlayers];
-    let roles = new Array(this.props.numPlayers);
+    const roles = new Array(this.props.numPlayers);
     roles.fill(Team.SPY, 0, numSpies);
     roles.fill(Team.RESISTANCE, numSpies);
 
-    let deck = new Deck(roles);
+    const deck = new Deck(roles);
     deck.shuffle();
 
     const players = deck
@@ -89,7 +89,7 @@ export default class Dealer extends React.PureComponent<Props, State> {
     return players;
   };
 
-  private updateRevealProgress = () => {
+  private updateRevealProgress = (): void => {
     if (this.state.revealState === RevealState.HOLDING) {
       if (this.state.revealProgress < 100) {
         this.setState({ revealProgress: this.state.revealProgress + 50 });
@@ -106,13 +106,13 @@ export default class Dealer extends React.PureComponent<Props, State> {
     }
   };
 
-  private revealStart = () => {
+  private revealStart = (): void => {
     if (this.state.revealState === RevealState.WAITING) {
       this.setState({ revealState: RevealState.HOLDING });
     }
   };
 
-  private revealEnd = () => {
+  private revealEnd = (): void => {
     if (this.state.revealState === RevealState.HOLDING) {
       this.setState({ revealState: RevealState.WAITING, revealProgress: 0 });
     } else if (this.state.revealState === RevealState.REVEALED) {
@@ -120,7 +120,7 @@ export default class Dealer extends React.PureComponent<Props, State> {
     }
   };
 
-  render() {
+  render(): React.ReactNode {
     return (
       <>
         <LinearProgress
@@ -133,7 +133,7 @@ export default class Dealer extends React.PureComponent<Props, State> {
     );
   }
 
-  private renderBody() {
+  private renderBody(): React.ReactNode {
     const currentPlayer = this.state.players[this.state.currentPlayerIndex];
     if (currentPlayer) {
       return (
@@ -150,6 +150,6 @@ export default class Dealer extends React.PureComponent<Props, State> {
     }
   }
 
-  private updateCurrentPlayer = () =>
+  private updateCurrentPlayer = (): void =>
     this.setState({ currentPlayerIndex: this.state.currentPlayerIndex + 1 });
 }

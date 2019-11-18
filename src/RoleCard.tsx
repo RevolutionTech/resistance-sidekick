@@ -19,7 +19,7 @@ interface Props {
 }
 
 export class RoleCard extends React.PureComponent<Props> {
-  render() {
+  render(): React.ReactNode {
     return (
       <Paper className="RoleCard">
         <Typography variant="h5">
@@ -47,12 +47,13 @@ export class RoleCard extends React.PureComponent<Props> {
     );
   }
 
-  private getMainCopy = () => {
+  private getMainCopy = (): React.ReactNode => {
     switch (this.props.revealState) {
       case RevealState.WAITING:
         return (
           <>
-            When you're ready, hold down the button below to reveal your role.
+            When you&apos;re ready, hold down the button below to reveal your
+            role.
           </>
         );
       case RevealState.HOLDING:

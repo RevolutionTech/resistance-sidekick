@@ -24,13 +24,13 @@ export default class Game extends React.PureComponent<{}, State> {
     selectedNumPlayers: Game.NUM_PLAYERS_MIN
   };
 
-  componentDidMount() {
+  componentDidMount(): void {
     this.reset();
   }
 
-  private reset = () => this.setState({ gameState: GameState.OPTIONS });
+  private reset = (): void => this.setState({ gameState: GameState.OPTIONS });
 
-  render() {
+  render(): React.ReactNode {
     return (
       <>
         {this.renderGame()}
@@ -39,12 +39,12 @@ export default class Game extends React.PureComponent<{}, State> {
     );
   }
 
-  private renderGame() {
+  private renderGame(): React.ReactNode {
     switch (this.state.gameState) {
       case GameState.OPTIONS:
         return (
           <form
-            onSubmit={e => {
+            onSubmit={(e): void => {
               e.preventDefault();
               this.setState({ gameState: GameState.DEAL });
             }}
@@ -58,7 +58,7 @@ export default class Game extends React.PureComponent<{}, State> {
                 max: Game.NUM_PLAYERS_MAX
               }}
               defaultValue={this.state.selectedNumPlayers}
-              onChange={e =>
+              onChange={(e): void =>
                 this.setState({ selectedNumPlayers: parseInt(e.target.value) })
               }
               style={{ width: "100%", marginBottom: "2em" }}
@@ -77,7 +77,7 @@ export default class Game extends React.PureComponent<{}, State> {
     }
   }
 
-  private renderResetButton() {
+  private renderResetButton(): React.ReactNode {
     switch (this.state.gameState) {
       case GameState.OPTIONS:
         return null;
