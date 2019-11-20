@@ -2,7 +2,7 @@ import * as React from "react";
 import { TextField, Button, Fab } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import RefreshIcon from "@material-ui/icons/Refresh";
-import Dealer from "./Dealer";
+import { Dealer } from "./Dealer";
 import "./Game.css";
 
 enum GameState {
@@ -15,7 +15,7 @@ interface State {
   selectedNumPlayers: number;
 }
 
-export default class Game extends React.PureComponent<{}, State> {
+export class Game extends React.PureComponent<{}, State> {
   private static NUM_PLAYERS_MIN = 5;
   private static NUM_PLAYERS_MAX = 10;
 

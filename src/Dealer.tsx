@@ -25,7 +25,7 @@ interface State {
   revealProgress: number;
 }
 
-export default class Dealer extends React.PureComponent<Props, State> {
+export class Dealer extends React.PureComponent<Props, State> {
   private static NUM_SPIES_BY_PLAYER_COUNT: Record<number, number> = {
     5: 2,
     6: 2,
