@@ -5,7 +5,7 @@ import { RevealState, RoleCard } from "./RoleCard";
 
 enum Team {
   RESISTANCE = "Resistance",
-  SPY = "Spy"
+  SPY = "Spy",
 }
 
 interface PlayerInfo {
@@ -32,7 +32,7 @@ export class Dealer extends React.PureComponent<Props, State> {
     7: 3,
     8: 3,
     9: 3,
-    10: 4
+    10: 4,
   };
 
   state: State = {
@@ -40,7 +40,7 @@ export class Dealer extends React.PureComponent<Props, State> {
     currentPlayerIndex: 0,
     revealState: RevealState.WAITING,
     revealTimer: null,
-    revealProgress: 0
+    revealProgress: 0,
   };
 
   componentDidMount(): void {
@@ -59,7 +59,7 @@ export class Dealer extends React.PureComponent<Props, State> {
       currentPlayerIndex: 0,
       revealState: RevealState.WAITING,
       revealTimer: window.setInterval(this.updateRevealProgress, 500),
-      revealProgress: 0
+      revealProgress: 0,
     });
   };
 
@@ -83,7 +83,7 @@ export class Dealer extends React.PureComponent<Props, State> {
       .map((team: Team, i: number) => {
         return {
           name: `Player ${i + 1}`,
-          team
+          team,
         };
       });
     return players;

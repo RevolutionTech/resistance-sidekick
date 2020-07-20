@@ -7,7 +7,7 @@ import "./Game.css";
 
 enum GameState {
   OPTIONS = "options",
-  DEAL = "deal"
+  DEAL = "deal",
 }
 
 interface State {
@@ -21,7 +21,7 @@ export class Game extends React.PureComponent<{}, State> {
 
   state: State = {
     gameState: GameState.OPTIONS,
-    selectedNumPlayers: Game.NUM_PLAYERS_MIN
+    selectedNumPlayers: Game.NUM_PLAYERS_MIN,
   };
 
   componentDidMount(): void {
@@ -55,7 +55,7 @@ export class Game extends React.PureComponent<{}, State> {
               type="number"
               inputProps={{
                 min: Game.NUM_PLAYERS_MIN,
-                max: Game.NUM_PLAYERS_MAX
+                max: Game.NUM_PLAYERS_MAX,
               }}
               defaultValue={this.state.selectedNumPlayers}
               onChange={(e): void =>
