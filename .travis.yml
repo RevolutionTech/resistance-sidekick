@@ -5,7 +5,7 @@ cache: yarn
 
 before_script:
   - yarn typecheck
-  - yarn lint:fix
+  - yarn lint
 script: true # no tests
 
 before_deploy: yarn build

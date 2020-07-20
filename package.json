@@ -16,6 +16,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "typecheck": "tsc --noemit",
+    "lint": "eslint './src/**/*.{ts,tsx}'",
     "lint:fix": "eslint --fix './src/**/*.{ts,tsx}'"
   },
   "eslintConfig": {
