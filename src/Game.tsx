@@ -12,7 +12,7 @@ const NUM_SPIES_BY_PLAYER_COUNT: Record<number, number> = {
   7: 3,
   8: 3,
   9: 3,
-  10: 4
+  10: 4,
 };
 
 const dealPlayers = (numPlayers: number): PlayerInfo[] => {
@@ -27,7 +27,7 @@ const dealPlayers = (numPlayers: number): PlayerInfo[] => {
   const players = deck.draw(numPlayers).map((team: Team, i: number) => {
     return {
       name: `Player ${i + 1}`,
-      team
+      team,
     };
   });
   return players;
@@ -62,7 +62,7 @@ export const Game: React.FC = () => {
           type="number"
           inputProps={{
             min: NUM_PLAYERS_MIN,
-            max: NUM_PLAYERS_MAX
+            max: NUM_PLAYERS_MAX,
           }}
           defaultValue={selectedNumPlayers}
           onChange={(e): void =>

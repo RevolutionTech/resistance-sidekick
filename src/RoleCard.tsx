@@ -7,7 +7,7 @@ export enum RevealState {
   WAITING = "waiting",
   HOLDING = "holding",
   REVEALED = "revealed",
-  PASSING = "passing"
+  PASSING = "passing",
 }
 
 interface Props {

@@ -4,7 +4,7 @@ import { RevealState, RoleCard } from "./RoleCard";
 
 export enum Team {
   RESISTANCE = "Resistance",
-  SPY = "Spy"
+  SPY = "Spy",
 }
 
 export interface PlayerInfo {
