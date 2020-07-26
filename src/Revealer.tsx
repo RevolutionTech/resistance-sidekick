@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Typography, LinearProgress } from "@material-ui/core";
 import { RevealState, RoleCard } from "./RoleCard";
 import "./Revealer.css";
@@ -24,22 +24,22 @@ export const Revealer: React.FC<Props> = (props: Props) => {
   );
   const [revealProgress, setRevealProgress] = useState<number>(0);
 
-  const revealStart = (): void => {
+  const revealStart = useCallback(() => {
     if (revealState === RevealState.WAITING) {
       setRevealState(RevealState.HOLDING);
     }
-  };
+  }, [revealState]);
 
-  const revealEnd = (): void => {
+  const revealEnd = useCallback(() => {
     if (revealState === RevealState.HOLDING) {
       setRevealState(RevealState.WAITING);
       setRevealProgress(0);
     } else if (revealState === RevealState.REVEALED) {
       setRevealState(RevealState.PASSING);
     }
-  };
+  }, [revealState]);
 
-  const renderBody = (): React.ReactNode => {
+  const renderBody = useCallback(() => {
     const currentPlayer = props.players[currentPlayerIndex];
     if (currentPlayer) {
       return (
@@ -54,38 +54,29 @@ export const Revealer: React.FC<Props> = (props: Props) => {
     } else {
       return <Typography>All set!</Typography>;
     }
-  };
+  }, [revealState, currentPlayerIndex]);
 
-  // This feels really ugly, but the refs seem to be necessary
-  // for anything that's read in the timer function
-  const currentPlayerIndexRef = useRef(currentPlayerIndex);
-  currentPlayerIndexRef.current = currentPlayerIndex;
-  const revealStateRef = useRef(revealState);
-  revealStateRef.current = revealState;
-  const revealProgressRef = useRef(revealProgress);
-  revealProgressRef.current = revealProgress;
-
-  const updateRevealProgress = (): void => {
-    if (revealStateRef.current === RevealState.HOLDING) {
-      if (revealProgressRef.current < 100) {
-        setRevealProgress(revealProgressRef.current + 2);
+  const updateRevealProgress = useCallback(() => {
+    if (revealState === RevealState.HOLDING) {
+      if (revealProgress < 100) {
+        setRevealProgress(revealProgress + 2);
       } else {
         setRevealState(RevealState.REVEALED);
       }
-    } else if (revealStateRef.current === RevealState.PASSING) {
-      if (revealProgressRef.current > 0) {
-        setRevealProgress(revealProgressRef.current - 1);
+    } else if (revealState === RevealState.PASSING) {
+      if (revealProgress > 0) {
+        setRevealProgress(revealProgress - 1);
       } else {
-        setCurrentPlayerIndex(currentPlayerIndexRef.current + 1);
+        setCurrentPlayerIndex(currentPlayerIndex + 1);
         setRevealState(RevealState.WAITING);
       }
     }
-  };
+  }, [revealState, revealProgress]);
 
   useEffect(() => {
     const revealTimer = window.setInterval(updateRevealProgress, 20);
     return (): void => window.clearInterval(revealTimer);
-  }, []);
+  }, [updateRevealProgress]);
 
   return (
     <>
