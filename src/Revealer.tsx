@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Typography, LinearProgress } from "@material-ui/core";
 import { RevealState, RoleCard } from "./RoleCard";
+import "./Revealer.css";
 
 export enum Team {
   RESISTANCE = "Resistance",
@@ -67,13 +68,13 @@ export const Revealer: React.FC<Props> = (props: Props) => {
   const updateRevealProgress = (): void => {
     if (revealStateRef.current === RevealState.HOLDING) {
       if (revealProgressRef.current < 100) {
-        setRevealProgress(revealProgressRef.current + 50);
+        setRevealProgress(revealProgressRef.current + 2);
       } else {
         setRevealState(RevealState.REVEALED);
       }
     } else if (revealStateRef.current === RevealState.PASSING) {
       if (revealProgressRef.current > 0) {
-        setRevealProgress(revealProgressRef.current - 25);
+        setRevealProgress(revealProgressRef.current - 1);
       } else {
         setCurrentPlayerIndex(currentPlayerIndexRef.current + 1);
         setRevealState(RevealState.WAITING);
@@ -82,7 +83,7 @@ export const Revealer: React.FC<Props> = (props: Props) => {
   };
 
   useEffect(() => {
-    const revealTimer = window.setInterval(updateRevealProgress, 500);
+    const revealTimer = window.setInterval(updateRevealProgress, 20);
     return (): void => window.clearInterval(revealTimer);
   }, []);
 
@@ -91,7 +92,7 @@ export const Revealer: React.FC<Props> = (props: Props) => {
       <LinearProgress
         variant="determinate"
         value={revealProgress}
-        className="mt2 mb1"
+        className="RevealProgress"
       />
       {renderBody()}
     </>

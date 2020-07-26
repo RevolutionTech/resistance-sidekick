@@ -1,0 +1,8 @@
+.RevealProgress {
+  margin-top: 2em;
+  margin-bottom: 1em;
+}
+
+.RevealProgress.MuiLinearProgress-root > .MuiLinearProgress-bar {
+  transition-duration: 0s;
+}
