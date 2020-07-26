@@ -54,7 +54,7 @@ export const Revealer: React.FC<Props> = (props: Props) => {
     } else {
       return <Typography>All set!</Typography>;
     }
-  }, [revealState, currentPlayerIndex]);
+  }, [props.players, currentPlayerIndex, revealState, revealStart, revealEnd]);
 
   const updateRevealProgress = useCallback(() => {
     if (revealState === RevealState.HOLDING) {
@@ -71,7 +71,7 @@ export const Revealer: React.FC<Props> = (props: Props) => {
         setRevealState(RevealState.WAITING);
       }
     }
-  }, [revealState, revealProgress]);
+  }, [currentPlayerIndex, revealState, revealProgress]);
 
   useEffect(() => {
     const revealTimer = window.setInterval(updateRevealProgress, 20);
