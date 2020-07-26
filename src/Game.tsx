@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { TextField, Button, Fab } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import RefreshIcon from "@material-ui/icons/Refresh";
@@ -40,52 +40,56 @@ export const Game: React.FC = () => {
   const [selectedNumPlayers, setSelectedNumPlayers] = useState<number>(
     NUM_PLAYERS_MIN
   );
-  const [players, setPlayers] = useState<PlayerInfo[]>([]);
+  const [players, setPlayers] = useState<PlayerInfo[] | undefined>();
 
-  const inGame = players.length > 0;
-
-  const renderGame = (): React.ReactNode =>
-    inGame ? (
-      <>
-        <Revealer players={players} />
-      </>
-    ) : (
-      <form
-        onSubmit={(e): void => {
-          e.preventDefault();
-          setPlayers(dealPlayers(selectedNumPlayers));
-        }}
-        className="SetupContainer"
-      >
-        <TextField
-          label="Number of players"
-          type="number"
-          inputProps={{
-            min: NUM_PLAYERS_MIN,
-            max: NUM_PLAYERS_MAX,
+  const renderGame = useCallback(
+    () =>
+      players == null ? (
+        <form
+          onSubmit={(e): void => {
+            e.preventDefault();
+            setPlayers(dealPlayers(selectedNumPlayers));
           }}
-          defaultValue={selectedNumPlayers}
-          onChange={(e): void =>
-            setSelectedNumPlayers(parseInt(e.target.value))
-          }
-          style={{ width: "100%", marginBottom: "2em" }}
-        />
-        <Fab variant="extended" type="submit" style={{ width: "100%" }}>
-          <SendIcon className="mr025" /> Start game
-        </Fab>
-      </form>
-    );
+          className="SetupContainer"
+        >
+          <TextField
+            label="Number of players"
+            type="number"
+            inputProps={{
+              min: NUM_PLAYERS_MIN,
+              max: NUM_PLAYERS_MAX,
+            }}
+            defaultValue={selectedNumPlayers}
+            onChange={(e): void =>
+              setSelectedNumPlayers(parseInt(e.target.value))
+            }
+            style={{ width: "100%", marginBottom: "2em" }}
+          />
+          <Fab variant="extended" type="submit" style={{ width: "100%" }}>
+            <SendIcon className="mr025" /> Start game
+          </Fab>
+        </form>
+      ) : (
+        <>
+          <Revealer players={players} />
+        </>
+      ),
+    [selectedNumPlayers, players]
+  );
 
-  const renderResetButton = (): React.ReactNode =>
-    inGame ? (
-      <Button
-        onClick={(): void => setPlayers([])}
-        style={{ marginBottom: "2em" }}
-      >
-        <RefreshIcon className="mr025" />
-        Start over?
-      </Button>
-    ) : null;
+  const renderResetButton = useCallback(
+    () =>
+      players && (
+        <Button
+          onClick={(): void => setPlayers(undefined)}
+          style={{ marginBottom: "2em" }}
+        >
+          <RefreshIcon className="mr025" />
+          Start over?
+        </Button>
+      ),
+    [players]
+  );
 
   return (
     <>
