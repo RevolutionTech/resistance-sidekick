@@ -1,93 +1,100 @@
-import * as React from "react";
+import React, { useState, useCallback } from "react";
 import { TextField, Button, Fab } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import RefreshIcon from "@material-ui/icons/Refresh";
-import { Dealer } from "./Dealer";
+import Deck from "card-deck";
+import { Team, PlayerInfo, Revealer } from "./Revealer";
 import "./Game.css";
 
-enum GameState {
-  OPTIONS = "options",
-  DEAL = "deal",
-}
+const NUM_SPIES_BY_PLAYER_COUNT: Record<number, number> = {
+  5: 2,
+  6: 2,
+  7: 3,
+  8: 3,
+  9: 3,
+  10: 4,
+};
 
-interface State {
-  gameState: GameState;
-  selectedNumPlayers: number;
-}
+const dealPlayers = (numPlayers: number): PlayerInfo[] => {
+  const numSpies = NUM_SPIES_BY_PLAYER_COUNT[numPlayers];
+  const roles = new Array(numPlayers);
+  roles.fill(Team.SPY, 0, numSpies);
+  roles.fill(Team.RESISTANCE, numSpies);
 
-export class Game extends React.PureComponent<{}, State> {
-  private static NUM_PLAYERS_MIN = 5;
-  private static NUM_PLAYERS_MAX = 10;
+  const deck = new Deck(roles);
+  deck.shuffle();
 
-  state: State = {
-    gameState: GameState.OPTIONS,
-    selectedNumPlayers: Game.NUM_PLAYERS_MIN,
-  };
+  const players = deck.draw(numPlayers).map((team: Team, i: number) => {
+    return {
+      name: `Player ${i + 1}`,
+      team,
+    };
+  });
+  return players;
+};
 
-  componentDidMount(): void {
-    this.reset();
-  }
+export const Game: React.FC = () => {
+  const NUM_PLAYERS_MIN = 5;
+  const NUM_PLAYERS_MAX = 10;
 
-  private reset = (): void => this.setState({ gameState: GameState.OPTIONS });
+  const [selectedNumPlayers, setSelectedNumPlayers] = useState<number>(
+    NUM_PLAYERS_MIN
+  );
+  const [players, setPlayers] = useState<PlayerInfo[] | undefined>();
 
-  render(): React.ReactNode {
-    return (
-      <>
-        {this.renderGame()}
-        {this.renderResetButton()}
-      </>
-    );
-  }
-
-  private renderGame(): React.ReactNode {
-    switch (this.state.gameState) {
-      case GameState.OPTIONS:
-        return (
-          <form
-            onSubmit={(e): void => {
-              e.preventDefault();
-              this.setState({ gameState: GameState.DEAL });
+  const renderGame = useCallback(
+    () =>
+      players == null ? (
+        <form
+          onSubmit={(e): void => {
+            e.preventDefault();
+            setPlayers(dealPlayers(selectedNumPlayers));
+          }}
+          className="SetupContainer"
+        >
+          <TextField
+            label="Number of players"
+            type="number"
+            inputProps={{
+              min: NUM_PLAYERS_MIN,
+              max: NUM_PLAYERS_MAX,
             }}
-            className="SetupContainer"
-          >
-            <TextField
-              label="Number of players"
-              type="number"
-              inputProps={{
-                min: Game.NUM_PLAYERS_MIN,
-                max: Game.NUM_PLAYERS_MAX,
-              }}
-              defaultValue={this.state.selectedNumPlayers}
-              onChange={(e): void =>
-                this.setState({ selectedNumPlayers: parseInt(e.target.value) })
-              }
-              style={{ width: "100%", marginBottom: "2em" }}
-            />
-            <Fab variant="extended" type="submit" style={{ width: "100%" }}>
-              <SendIcon className="mr025" /> Start game
-            </Fab>
-          </form>
-        );
-      case GameState.DEAL:
-        return (
-          <>
-            <Dealer numPlayers={this.state.selectedNumPlayers} />
-          </>
-        );
-    }
-  }
+            defaultValue={selectedNumPlayers}
+            onChange={(e): void =>
+              setSelectedNumPlayers(parseInt(e.target.value))
+            }
+            style={{ width: "100%", marginBottom: "2em" }}
+          />
+          <Fab variant="extended" type="submit" style={{ width: "100%" }}>
+            <SendIcon className="mr025" /> Start game
+          </Fab>
+        </form>
+      ) : (
+        <>
+          <Revealer players={players} />
+        </>
+      ),
+    [selectedNumPlayers, players]
+  );
 
-  private renderResetButton(): React.ReactNode {
-    switch (this.state.gameState) {
-      case GameState.OPTIONS:
-        return null;
-      default:
-        return (
-          <Button onClick={this.reset} style={{ marginBottom: "2em" }}>
-            <RefreshIcon className="mr025" />
-            Start over?
-          </Button>
-        );
-    }
-  }
-}
+  const renderResetButton = useCallback(
+    () =>
+      players && (
+        <Button
+          onClick={(): void => setPlayers(undefined)}
+          style={{ marginBottom: "2em" }}
+        >
+          <RefreshIcon className="mr025" />
+          Start over?
+        </Button>
+      ),
+    [players]
+  );
+
+  return (
+    <>
+      {renderGame()}
+      {renderResetButton()}
+    </>
+  );
+};
