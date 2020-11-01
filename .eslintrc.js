@@ -12,12 +12,19 @@ module.exports = {
     jasmine: true,
     jest: true
   },
-  rules: {},
+  rules: {
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars-experimental": "error"
+  },
   settings: {
     react: {
       pragma: "React",
       version: "detect"
     }
   },
-  parser: "@typescript-eslint/parser"
+  parser: "@typescript-eslint/parser",
+  parserOptions: {
+    "project": "./tsconfig.json"
+  }
 };
