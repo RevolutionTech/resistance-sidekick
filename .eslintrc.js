@@ -11,11 +11,6 @@ module.exports = {
     jasmine: true,
     jest: true
   },
-  rules: {
-    "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars-experimental": "error"
-  },
   settings: {
     react: {
       pragma: "React",
