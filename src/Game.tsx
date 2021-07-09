@@ -37,9 +37,8 @@ export const Game: React.FC = () => {
   const NUM_PLAYERS_MIN = 5;
   const NUM_PLAYERS_MAX = 10;
 
-  const [selectedNumPlayers, setSelectedNumPlayers] = useState<number>(
-    NUM_PLAYERS_MIN
-  );
+  const [selectedNumPlayers, setSelectedNumPlayers] =
+    useState<number>(NUM_PLAYERS_MIN);
   const [players, setPlayers] = useState<PlayerInfo[] | undefined>();
 
   const renderGame = useCallback(
